@@ -1,38 +1,19 @@
-const getData = (url) => {
-  return fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      return data;
-    })
-    .catch((error) => console.log(error));
+let obj = {
+  user: "Vlad",
+  age: 33,
+  role: "developer",
 };
 
-const sendData = ({ url, data, method }) => {
-  fetch(url, {
-    method: method,
-    body: JSON.stringify(data),
-    headers: {
-      "Content-type": "application/json; charset=UTF-8",
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      return data;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
+let xhr = new XMLHttpRequest();
 
-getData("db.json")
-  .then((data) => {
-    return sendData({
-      url: "https://jsonplaceholder.typicode.com/posts",
-      data: data,
-      method: "POST",
-    });
-  })
-  .then((data) => console.log(data))
-  .catch((error) => console.log(error));
+xhr.open("POST", "https://jsonplaceholder.typicode.com/posts");
+xhr.setRequestHeader("Content-type", "application/json; charset=utf-8");
+xhr.send(JSON.stringify(obj));
+
+xhr.onloadend = function () {
+  if (xhr.status == 201) {
+    console.log("Успех");
+  } else {
+    console.log("Ошибка " + this.status);
+  }
+};
